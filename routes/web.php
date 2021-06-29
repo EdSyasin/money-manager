@@ -13,6 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+Route::get('/', function(){
+    $res = \App\Models\Expense::where('user_id', 1)->get();
+    $total = 0;
+    foreach ($res as $item) {
+        $category = \App\Models\Category::where('user_id', 1)->first()->name;
+        echo "$category : $item->amount Р. <br>";
+        $total += $item->amount;
+    }
+    echo "<br>";
+    echo "Всего: $total Р.";
 });
+
+
+

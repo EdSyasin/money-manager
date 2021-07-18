@@ -21,8 +21,12 @@ Route::get('/', function(){
     $res = \App\Models\Expense::where('user_id', 1)->get();
     $total = 0;
     foreach ($res as $item) {
-        $category = \App\Models\Category::where('user_id', 1)->where('id', $item->category_id)->first()->name;
-        echo "$category : $item->amount Р. <br>";
+        $category = \App\Models\Category::where('user_id', 1)->where('id', $item->category_id)->first();
+        if($category){
+            echo "$category->name : $item->amount Р. <br>";
+        } else {
+            echo "Без категории : $item->amount Р. <br>";
+        }
         $total += $item->amount;
     }
     echo "<br>";

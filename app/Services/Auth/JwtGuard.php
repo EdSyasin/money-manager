@@ -5,6 +5,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
+use App\Services\Jwt;
 
 class JwtGuard implements Guard
 {
@@ -64,6 +65,17 @@ class JwtGuard implements Guard
         if (!is_null($this->user)) {
             return $this->user;
         }
+
+        $token = $this->request->bearerToken();
+        if(preg_match('/[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)$/', $token)){
+            $jwt = new Jwt($token);
+
+            if ($jwt->verified) {
+                $id = $jwt->payload->id;
+                return $this->user = $this->provider->retrieveById($id);
+            }
+        }
+
     }
 
     /**

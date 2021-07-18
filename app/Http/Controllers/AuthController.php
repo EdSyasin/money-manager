@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Services\Jwt;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,6 +22,6 @@ class AuthController extends Controller
         if(!$user){
             return response()->json(['message' => 'user is not found', 'errors' => ['login' => 'user is not found']], 403);
         }
-        return Jwt::createAccessToken($user);
+        dd(new Jwt(Jwt::createAccessToken($user)));
     }
 }

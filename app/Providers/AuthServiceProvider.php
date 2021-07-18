@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use App\Services\Auth\JwtGuard;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+
+        $this->app['auth']->extend('jwt:api', function ($app, $name, array $config) {
+            $guard = new JwtGuard(
+                $app['auth']->createUserProvider($config['provider']),
+                $app['request']
+            );
+
+            $app->refresh('request', $guard, 'setRequest');
+
+            return $guard;
+        });
     }
 }

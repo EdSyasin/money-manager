@@ -13,8 +13,9 @@ class Jwt
     private $jwt;
     private $payload;
     private $signature;
-    private $verified;
+    private $verified = true;
     private $error = null;
+    private $isRefresh = false;
 
     public function __construct($jwt)
     {
@@ -26,7 +27,6 @@ class Jwt
         list ($headers, $payload, $signature) = explode('.', $jwt);
         $this->payload = json_decode(Base64url::decode($payload));
         $this->signature = Base64url::decode($signature);
-        $this->verified = true;
         if(hash_hmac('SHA256', $headers.'.'.$payload, ENV('JWT_KEY')) !== $this->signature ){
             $this->verified = false;
             $this->error = 'Подпись кривая';
@@ -35,9 +35,15 @@ class Jwt
             $this->verified = false;
             $this->error = 'Токен протух';
         }
+        if($this->payload->refresh){
+            $this->isRefresh = true;
+        }
     }
 
 
+    /**
+     * @throws Exception
+     */
     public function __get($property) {
         if (property_exists($this, $property)) {
             return $this->$property;
@@ -48,15 +54,15 @@ class Jwt
 
     static public function createAccessToken(User $user): string
     {
-        return self::createToken($user, 15);
+        return self::createToken($user);
     }
 
     static public function createRefreshToken(User $user): string
     {
-        return self::createToken($user, 43200);
+        return self::createToken($user, true);
     }
 
-    static private function createToken(User $user, int $minutes): string
+    static private function createToken(User $user, bool $refresh = false): string
     {
         $headers = [
             'alg' => 'HS256',
@@ -65,8 +71,9 @@ class Jwt
         $payload = [
             'id' => $user->id,
             'name' => "$user->first_name $user->last_name",
-            "exp" => Carbon::now()->addMinutes($minutes)->timestamp,
-            'iat' => Carbon::now()->timestamp
+            "exp" => Carbon::now()->addMinutes($refresh ? 43200 : 15)->timestamp,
+            'iat' => Carbon::now()->timestamp,
+            'refresh' => !!$refresh
         ];
         $signature = hash_hmac('SHA256', Base64url::encode(json_encode($headers)) . '.' . Base64url::encode(json_encode($payload)), ENV('JWT_KEY'));
         $token = Base64url::encode(json_encode($headers)) . '.' . Base64url::encode(json_encode($payload)) . '.' . Base64url::encode($signature);

@@ -33,4 +33,22 @@ class AuthController extends Controller
         ]);
 
     }
+
+    public function refresh(Request $request){
+        $this->validate($request, [
+            'refresh_token' => 'required'
+        ]);
+        $token = new JWT($request->input('refresh_token'));
+        $user = User::find($token->payload->id);
+        if($token->verified && $token->isRefresh){
+            return response()->json([
+                'user' => $user,
+                'access_token' => Jwt::createAccessToken($user),
+                'refresh_token' => Jwt::createRefreshToken($user)
+            ]);
+        } else {
+            return response()->json(['message' => 'token is fucked'], 422);
+        }
+
+    }
 }

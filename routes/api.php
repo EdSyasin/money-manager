@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 //-----Auth-----
 Route::post('/auth', [\App\Http\Controllers\AuthController::class, 'auth']);
+Route::post('/auth/refresh', [\App\Http\Controllers\AuthController::class, 'refresh']);
 
 
 

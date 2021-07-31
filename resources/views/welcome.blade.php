@@ -11,6 +11,6 @@
         <div id="app">
 
         </div>
-        <script src="{{ mix('js/app.js') }}"></script>
+        <script src="/js/bundle.js"></script>
     </body>
 </html>

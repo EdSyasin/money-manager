@@ -1,0 +1,6 @@
+@use "sass:math";
+
+@function convertByVw($media, $size){
+    $result: math.div($size, $media) * 1vw * 100;
+    @return $result;
+}

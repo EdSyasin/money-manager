@@ -73,7 +73,8 @@ class Jwt
             'name' => "$user->first_name $user->last_name",
             "exp" => Carbon::now()->addMinutes($refresh ? 43200 : 15)->timestamp,
             'iat' => Carbon::now()->timestamp,
-            'refresh' => !!$refresh
+            'refresh' => $refresh,
+            "kek" => 'lol'
         ];
         $signature = hash_hmac('SHA256', Base64url::encode(json_encode($headers)) . '.' . Base64url::encode(json_encode($payload)), ENV('JWT_KEY'));
         $token = Base64url::encode(json_encode($headers)) . '.' . Base64url::encode(json_encode($payload)) . '.' . Base64url::encode($signature);

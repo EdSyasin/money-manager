@@ -24,7 +24,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::prefix('/users')->group(function () {
+    Route::middleware(['auth:api', 'user'])->get('/{userId}/expenses', [\App\Http\Controllers\ExpenseController::class, 'getByUser']);
+});
+
+
 Route::prefix('/expenses')->group(function () {
+    Route::middleware('auth:api')->get('/', [\App\Http\Controllers\ExpenseController::class, 'get']);
     Route::middleware('auth:api')->post('/', [\App\Http\Controllers\ExpenseController::class, 'store']);
 });
 

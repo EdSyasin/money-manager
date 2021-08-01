@@ -1,10 +1,17 @@
-require('./bootstrap');
+import Vue from 'vue';
+import router from './router';
+import App from './App.vue';
+import '../css/normalize.css';
 
-import Vue from 'vue'
-import App from './App.vue'
+//Global components
+import DefaultLayout from "@/layouts/default-layout/DefaultLayout";
+import CleanLayout from "@/layouts/CleanLayout";
 
-Vue.config.productionTip = false
+Vue.component('default-layout', DefaultLayout);
+Vue.component('clean-layout', CleanLayout);
+
 
 new Vue({
-	render: h => h(App),
-}).$mount('#app')
+	router,
+	render: h => h(App)
+}).$mount("#app")

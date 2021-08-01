@@ -6,7 +6,7 @@
 
 <script>
 export default {
-	name: "Welcome.vue"
+	name: "Welcome"
 }
 </script>
 

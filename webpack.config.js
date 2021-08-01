@@ -43,6 +43,7 @@ module.exports = {
 						loader: "sass-loader",
 						options: {
 							additionalData: `
+							@charset 'utf-8';
 							@import 'resources/scss/variables.scss';
 							@import 'resources/scss/functions.scss';
 							`

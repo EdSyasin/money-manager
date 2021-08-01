@@ -1,15 +1,22 @@
 <template>
-<div class="app">
-	<router-view></router-view>
-</div>
+	<component :is="layout" class="app">
+		<router-view></router-view>
+	</component>
 </template>
 
 <script>
 export default {
-	name: "App"
+	name: "App",
+	computed: {
+		layout(){
+			return this.$route.meta.layout || 'default-layout'
+		}
+	}
 }
 </script>
 
 <style lang="scss">
-
+	body{
+		min-height: 100vh;
+	}
 </style>

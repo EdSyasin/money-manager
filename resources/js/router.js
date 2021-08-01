@@ -7,12 +7,12 @@ const routes = [
 	{
 		name: 'welcome',
 		path: "/",
-		component: () => import('@/views/Welcome')
+		component: () => import(/* webpackChunkName: "WelcomePage" */ '@/views/Welcome')
 	},
 	{
 		name: 'Login',
 		path: "/login",
-		component: () => import('@/views/login/Login'),
+		component: () => import(/* webpackChunkName: "LoginPage" */ '@/views/login/Login'),
 		meta: {
 			layout: 'clean-layout'
 		}

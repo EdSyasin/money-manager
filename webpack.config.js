@@ -5,10 +5,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
 	entry: path.resolve(__dirname, 'resources/js/app.js'),
 	output: {
-		path: path.resolve(__dirname, 'public/js'),
-		filename: "bundle.js",
-		chunkFilename: "[name].bundle.js",
-		publicPath: "/js/"
+		path: path.resolve(__dirname, 'public'),
+		filename: "js/bundle.js",
+		chunkFilename: "js/[name].bundle.js",
+		publicPath: "/"
 	},
 	plugins: [
 		new VueLoaderPlugin(),
@@ -46,7 +46,20 @@ module.exports = {
 							@charset 'utf-8';
 							@import 'resources/scss/variables.scss';
 							@import 'resources/scss/functions.scss';
+							@import 'resources/scss/mixins.scss';
 							`
+						}
+					}
+				]
+			},
+			{
+				test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: '[name].[ext]',
+							outputPath: 'fonts/'
 						}
 					}
 				]

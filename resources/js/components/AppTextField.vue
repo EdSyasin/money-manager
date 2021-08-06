@@ -1,6 +1,6 @@
 <template>
 	<div class="app-text-field">
-		<input class="app-text-field__input" :placeholder="placeholder"/>
+		<input class="app-text-field__input" :placeholder="placeholder" v-model="localValue"/>
 	</div>
 </template>
 
@@ -10,6 +10,16 @@ export default {
 	props: {
 		value: String,
 		placeholder: String
+	},
+	computed: {
+		localValue: {
+			get(){
+				return this.value;
+			},
+			set(value){
+				this.$emit('input', value);
+			}
+		}
 	}
 }
 </script>

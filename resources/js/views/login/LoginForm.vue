@@ -5,22 +5,36 @@
 				placeholder="Login"
 		></app-text-filed>
 		<app-text-filed
-				v-model="form.login"
+				v-model="form.password"
 				placeholder="Password"
 		></app-text-filed>
-		<app-button>Войти</app-button>
+		<app-button @click="validate">Войти</app-button>
 	</div>
 </template>
 
 <script>
+import Validator from "@/services/validator";
+
 export default {
 	name: "LoginForm",
 	data:() => ({
 		form: {
 			login: '',
 			password: ''
+		},
+		validationErrors: {}
+	}),
+	methods: {
+		validate(){
+			this.validationErrors = this.loginValidator.validate(this.form);
 		}
-	})
+	},
+	created(){
+		this.loginValidator = new Validator({
+			login: ['notEmpty', { rule: 'length', parameters: {min: 3, max: 10}}],
+			password: ['notEmpty', { rule: 'length', parameters: {min: 6}}]
+		});
+	}
 }
 </script>
 

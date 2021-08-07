@@ -1,13 +1,47 @@
 <template>
 	<div class="login-form">
-		<app-text-filed
-				v-model="form.login"
-				placeholder="Login"
-		></app-text-filed>
-		<app-text-filed
+		<div class="login-form__item">
+			<app-text-filed
+					v-model="form.login"
+					placeholder="Login"
+					class="login-form__item-input"
+			></app-text-filed>
+			<template v-if="this.validationErrors.login">
+				<span
+						class="login-form__item-error"
+						v-if="this.validationErrors.login.includes('notEmpty')"
+				>
+					Поле не может быть пустым
+				</span>
+				<span
+						class="login-form__item-error"
+						v-else-if="this.validationErrors.login.includes('length')"
+				>
+					Логин слишком короткий
+				</span>
+			</template>
+		</div>
+		<div class="login-form__item">
+			<app-text-filed
 				v-model="form.password"
 				placeholder="Password"
-		></app-text-filed>
+				class="login-form__item-input"
+			></app-text-filed>
+			<template v-if="this.validationErrors.password">
+				<span
+					class="login-form__item-error"
+					v-if="this.validationErrors.password.includes('notEmpty')"
+				>
+					Поле не может быть пустым
+				</span>
+				<span
+					class="login-form__item-error"
+					v-else-if="this.validationErrors.password.includes('length')"
+				>
+					Пароль слишком короткий
+				</span>
+			</template>
+		</div>
 		<app-button @click="validate">Войти</app-button>
 	</div>
 </template>
@@ -31,7 +65,7 @@ export default {
 	},
 	created(){
 		this.loginValidator = new Validator({
-			login: ['notEmpty', { rule: 'length', parameters: {min: 3, max: 10}}],
+			login: ['notEmpty', { rule: 'length', parameters: {min: 3}}],
 			password: ['notEmpty', { rule: 'length', parameters: {min: 6}}]
 		});
 	}
@@ -46,6 +80,12 @@ export default {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
+
+		&__item{
+			&-error{
+				color: darkred;
+			}
+		}
 	}
 
 	@mixin login-form-sizes($pageSize){
@@ -53,6 +93,14 @@ export default {
 			width: convertByVw($pageSize, 400px);
 			height: convertByVw($pageSize, 400px);
 			padding: convertByVw($pageSize, 16px);
+
+			&__item{
+				height: convertByVw($pageSize, 83px);
+
+				&-input{
+					margin-bottom: convertByVw($pageSize, 10px);
+				}
+			}
 		}
 	}
 

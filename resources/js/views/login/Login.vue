@@ -11,6 +11,9 @@ export default {
 	name: "Login",
 	components: {
 		LoginForm
+	},
+	beforeRouteEnter(to, from, next){
+		next();
 	}
 }
 </script>

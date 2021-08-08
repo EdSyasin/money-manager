@@ -12,9 +12,7 @@ class Resource {
 			this[action] = function(settings){
 				const actionItem = self.config[action];
 				const url = self.#prepareUrl(actionItem.url, settings);
-				console.log('UrL:', url)
 				const body = self.#prepareBody(actionItem.body, settings);
-				console.log('Body:', body);
 				if (actionItem.method === 'post' || actionItem.method === 'put'){
 					return HTTP[actionItem.method](url, body);
 				} else {
@@ -29,7 +27,6 @@ class Resource {
 			return item[0]
 		});
 		let localUrl = url;
-		console.log(settings)
 		result.forEach(param => {
 			console.log(settings[param.replace(':', '')])
 			localUrl = localUrl.replace(param, settings[param.replace(':', '')]);
@@ -60,6 +57,12 @@ class Resources {
 		localStorage.setItem('accessToken', access);
 		localStorage.setItem('refreshToken', refresh);
 		HTTP.defaults.headers.Authorization = `Bearer ${access}`;
+	}
+
+	cleanTokens(){
+		localStorage.removeItem('accessToken');
+		localStorage.removeItem('refreshToken');
+		HTTP.defaults.headers.Authorization = ``;
 	}
 }
 

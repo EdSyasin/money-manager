@@ -19,6 +19,13 @@
 				>
 					Логин слишком короткий
 				</span>
+				<span
+						class="login-form__item-error"
+						v-else-if="this.validationErrors.login.includes('user is not found')"
+				>
+					Пользователь не найден
+				</span>
+
 			</template>
 		</div>
 		<div class="login-form__item">
@@ -40,6 +47,13 @@
 				>
 					Пароль слишком короткий
 				</span>
+				<span
+					class="login-form__item-error"
+					v-else-if="this.validationErrors.password.includes('Wrong password')"
+				>
+					Неверный пароль
+				</span>
+
 			</template>
 		</div>
 		<app-button @click="submit">Войти</app-button>
@@ -70,11 +84,12 @@ export default {
 			this.loading = true;
 			this.api.auth(this.form)
 				.then(res => {
-					console.log(res)
 					this.Api.setTokens(res.data.access_token, res.data.refresh_token);
+					this.$store.commit('SET_USER', res.data.user);
+					this.$router.push('/');
 				})
 				.catch(err => {
-					console.log(err)
+					this.validationErrors = err.response.data.errors;
 				})
 		}
 	},

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import router from './router';
+import store from './store';
 import App from './App.vue';
 import '../css/normalize.css';
 import Api from '@/services/resources';
@@ -15,8 +16,12 @@ Vue.component('clean-layout', CleanLayout);
 Vue.component('app-button', AppButton);
 Vue.component('app-text-filed', AppTextField);
 
-new Vue({
+const vueInstance = new Vue({
 	provide: {Api},
 	router,
+	store,
 	render: h => h(App)
 }).$mount("#app")
+
+
+window.vue = vueInstance;

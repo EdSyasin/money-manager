@@ -1,6 +1,6 @@
 <template>
 	<component :is="layout" class="app">
-		<router-view></router-view>
+		<router-view v-if="!loading"></router-view>
 	</component>
 </template>
 
@@ -8,13 +8,31 @@
 export default {
 	name: "App",
 	inject: ['Api'],
+	data: () => ({
+		loading: true
+	}),
 	computed: {
 		layout(){
 			return this.$route.meta.layout || 'default-layout'
 		}
 	},
 	created(){
-
+		const refreshToken = localStorage.getItem('refreshToken');
+		if(refreshToken){
+			this.Api.auth.refresh({
+				'refresh_token': refreshToken
+			})
+			.then(res => {
+				this.Api.setTokens(res.data.access_token, res.data.refresh_token);
+				this.$store.commit('SET_USER', res.data.user);
+			})
+			.catch(() => {
+				this.$store.commit('DEL_USER');
+			})
+			.finally(() => {
+				this.loading = false;
+			})
+		}
 	}
 }
 </script>

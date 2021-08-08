@@ -7,10 +7,14 @@
 <script>
 export default {
 	name: "App",
+	inject: ['Api'],
 	computed: {
 		layout(){
 			return this.$route.meta.layout || 'default-layout'
 		}
+	},
+	created(){
+
 	}
 }
 </script>

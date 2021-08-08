@@ -2,6 +2,7 @@ import Vue from 'vue';
 import router from './router';
 import App from './App.vue';
 import '../css/normalize.css';
+import Api from '@/services/resources';
 
 //Global components
 import DefaultLayout from "@/layouts/default-layout/DefaultLayout";
@@ -14,8 +15,8 @@ Vue.component('clean-layout', CleanLayout);
 Vue.component('app-button', AppButton);
 Vue.component('app-text-filed', AppTextField);
 
-
 new Vue({
+	provide: {Api},
 	router,
 	render: h => h(App)
 }).$mount("#app")

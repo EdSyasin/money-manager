@@ -42,7 +42,7 @@
 				</span>
 			</template>
 		</div>
-		<app-button @click="validate">Войти</app-button>
+		<app-button @click="submit">Войти</app-button>
 	</div>
 </template>
 
@@ -51,16 +51,31 @@ import Validator from "@/services/validator";
 
 export default {
 	name: "LoginForm",
+	inject: ['Api'],
 	data:() => ({
 		form: {
 			login: '',
 			password: ''
 		},
-		validationErrors: {}
+		validationErrors: {},
+		loading: false
 	}),
 	methods: {
 		validate(){
 			this.validationErrors = this.loginValidator.validate(this.form);
+			return Object.keys(this.validationErrors).length === 0;
+		},
+		submit() {
+			if(!this.validate()) return false;
+			this.loading = true;
+			this.api.auth(this.form)
+				.then(res => {
+					console.log(res)
+					this.Api.setTokens(res.data.access_token, res.data.refresh_token);
+				})
+				.catch(err => {
+					console.log(err)
+				})
 		}
 	},
 	created(){
@@ -68,6 +83,7 @@ export default {
 			login: ['notEmpty', { rule: 'length', parameters: {min: 3}}],
 			password: ['notEmpty', { rule: 'length', parameters: {min: 6}}]
 		});
+		this.api = this.Api.auth;
 	}
 }
 </script>

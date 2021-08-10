@@ -17,6 +17,11 @@ const routes = [
 			layout: 'clean-layout'
 		}
 	},
+	{
+		name: 'Expenses',
+		path: '/expenses',
+		component: () => import(/* webpackChunkName: "ExpensesPage" */ '@/views/Expenses')
+	}
 
 ];
 

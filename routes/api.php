@@ -27,6 +27,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('/users')->group(function () {
     Route::middleware(['auth:api', 'user'])->get('/{userId}/expenses', [\App\Http\Controllers\ExpenseController::class, 'getByUser']);
     Route::middleware(['auth:api', 'user'])->get('/{userId}/categories', [\App\Http\Controllers\CategoryController::class, 'getByUser']);
+    Route::post('/', [\App\Http\Controllers\UserController::class, 'store']);
 });
 
 Route::prefix('/categories')->group(function () {

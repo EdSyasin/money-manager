@@ -28,7 +28,6 @@ class Resource {
 		});
 		let localUrl = url;
 		result.forEach(param => {
-			console.log(settings[param.replace(':', '')])
 			localUrl = localUrl.replace(param, settings[param.replace(':', '')]);
 		})
 		return localUrl;
@@ -49,7 +48,7 @@ class Resources {
 	constructor() {
 		let self = this;
 		Object.keys(resList).forEach(resourceName => {
-			self[resourceName] = new Resource(resourceName, resList[resourceName]);
+			self[resourceName] = () => new Resource(resourceName, resList[resourceName]);
 		})
 	}
 

@@ -19,7 +19,7 @@ export default {
 	created(){
 		const refreshToken = localStorage.getItem('refreshToken');
 		if(refreshToken){
-			this.Api.auth.refresh({
+			this.Api.auth().refresh({
 				'refresh_token': refreshToken
 			})
 			.then(res => {

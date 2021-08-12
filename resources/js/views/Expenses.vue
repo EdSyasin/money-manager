@@ -21,7 +21,11 @@ export default {
 				userId: this.$store.state.user.id
 			})
 			.then(res => {
+				console.log("!!!", res)
 				this.expenses = res.data.expenses;
+			})
+			.catch(err => {
+				//alert('lol')
 			})
 			.finally(() => {
 				this.loading = false;
@@ -29,7 +33,7 @@ export default {
 		}
 	},
 	created() {
-		this.api = this.Api.expenses;
+		this.api = this.Api.expenses();
 		this.updateExpenses();
 	}
 }

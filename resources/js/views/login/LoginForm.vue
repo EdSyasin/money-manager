@@ -98,7 +98,7 @@ export default {
 			login: ['notEmpty', { rule: 'length', parameters: {min: 3}}],
 			password: ['notEmpty', { rule: 'length', parameters: {min: 6}}]
 		});
-		this.api = this.Api.auth;
+		this.api = this.Api.auth();
 	}
 }
 </script>

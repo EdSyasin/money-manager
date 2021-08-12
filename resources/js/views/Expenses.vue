@@ -1,31 +1,55 @@
 <template>
 	<main class="expenses-page">
-
+		<app-data-table :items="expenses" :headers="$options.headers"></app-data-table>
 	</main>
 </template>
 
 <script>
 export default {
 	name: "Expenses",
-	inject:['Api'],
+	inject: ['Api'],
 	data(){
 		return {
 			loading: false,
-			expenses: []
+			expenses: [],
+			options: {
+				page: 1,
+				itemsPerPage: 10
+			}
 		}
 	},
+	headers: [
+		{
+			name: 'Сумма',
+			value: 'amount'
+		},
+		{
+			name: 'Категория',
+			value: 'category_id'
+		},
+		{
+			name: 'Комментарий',
+			value: 'description'
+		},
+		{
+			name: 'Дата',
+			value: 'spent_at'
+		},
+		{
+			name: '',
+			value: 'action',
+			align: 'right'
+		}
+	],
 	methods:{
 		updateExpenses(){
 			this.loading = true;
 			this.api.getByUser({
-				userId: this.$store.state.user.id
+				userId: this.$store.state.user.id,
+				...this.options
 			})
 			.then(res => {
-				console.log("!!!", res)
 				this.expenses = res.data.expenses;
-			})
-			.catch(err => {
-				//alert('lol')
 			})
 			.finally(() => {
 				this.loading = false;
@@ -46,7 +70,7 @@ export default {
 
 	@mixin expenses-page-sizes($pageSize){
 		.expenses-page{
-			padding: 0 $main-padding;
+			padding: convertByVw($pageSize, 50px) $main-padding;
 		}
 	}
 

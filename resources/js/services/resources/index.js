@@ -6,17 +6,17 @@ class Resource {
 		this.name = name;
 		this.config = config;
 
-
 		let self = this;
 		for(let action in config){
 			this[action] = function(settings){
 				const actionItem = self.config[action];
 				const url = self.#prepareUrl(actionItem.url, settings);
 				const body = self.#prepareBody(actionItem.body, settings);
+				const queryParams = self.#prepareQueryParams(actionItem.queryParams, settings);
 				if (actionItem.method === 'post' || actionItem.method === 'put'){
-					return HTTP[actionItem.method](url, body);
+					return HTTP[actionItem.method](url, body, { params: queryParams});
 				} else {
-					return HTTP[actionItem.method](url);
+					return HTTP[actionItem.method](url, { params: queryParams});
 				}
 			}
 		}
@@ -39,6 +39,16 @@ class Resource {
 
 		for(let field in body){
 			result[field] = settings[field] || body[field];
+		}
+		return result;
+	}
+
+	#prepareQueryParams(queryParams, settings){
+		if(!queryParams) return {};
+		let result = {};
+
+		for(let field in queryParams){
+			result[field] = settings[field] || queryParams[field];
 		}
 		return result;
 	}

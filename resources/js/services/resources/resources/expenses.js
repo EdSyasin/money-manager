@@ -4,7 +4,7 @@ export default {
 		url: 'users/:userId/expenses',
 		queryParams: {
 			page: '',
-			itemPerPage: 15
+			itemsPerPage: 15
 		}
 	},
 }

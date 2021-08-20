@@ -1,10 +1,20 @@
 <template>
 	<main class="expenses-page">
-		<app-data-table :items="expenses" :headers="$options.headers"></app-data-table>
+        <app-button @click="showForm = true">Добавить</app-button>
+        <the-expense-add-modal
+            v-if="showForm"
+            @close="showForm = false"
+        ></the-expense-add-modal>
+		<app-data-table
+                :items="expenses"
+                :headers="$options.headers"
+        ></app-data-table>
 	</main>
 </template>
 
 <script>
+import TheExpenseAddModal from "@/components/TheExpenseAddModal";
+
 export default {
 	name: "Expenses",
 	inject: ['Api'],
@@ -15,7 +25,8 @@ export default {
 			options: {
 				page: 1,
 				itemsPerPage: 10
-			}
+			},
+            showForm: true
 		}
 	},
 	headers: [
@@ -59,7 +70,10 @@ export default {
 	created() {
 		this.api = this.Api.expenses();
 		this.updateExpenses();
-	}
+	},
+    components: {
+	    TheExpenseAddModal
+    }
 }
 </script>
 

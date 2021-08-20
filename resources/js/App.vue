@@ -49,6 +49,7 @@ export default {
 		min-height: 100vh;
 		font-family: Roboto, sans-serif;
 		background: $bg-color;
+        color: $textColor;
 	}
 
 	*{

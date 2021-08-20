@@ -1,11 +1,6 @@
 export default {
-	get: {
+	getByUser: {
 		method: 'get',
-		url: "users/:userId/categories",
-		body: {
-			foo: 10,
-			bar: 20,
-			kek: 40
-		}
+		url: "users/:userId/categories"
 	}
 }

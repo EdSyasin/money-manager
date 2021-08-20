@@ -5,6 +5,9 @@
         "dev": "webpack --watch --mode=development"
     },
     "devDependencies": {
+        "@babel/core": "^7.15.0",
+        "@babel/preset-env": "^7.15.0",
+        "babel-loader": "^8.2.2",
         "file-loader": "^6.2.0",
         "lodash": "^4.17.19",
         "mini-css-extract-plugin": "^2.1.0",
